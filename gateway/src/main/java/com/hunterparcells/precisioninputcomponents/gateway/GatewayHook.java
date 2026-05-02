@@ -1,8 +1,8 @@
-package com.hunterparcells.huntercomponents.gateway;
+package com.hunterparcells.precisioninputcomponents.gateway;
 
 import java.util.Optional;
 
-import com.hunterparcells.huntercomponents.common.component.DebouncedTextField;
+import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextField;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -11,10 +11,10 @@ import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.perspective.common.api.ComponentRegistry;
 import com.inductiveautomation.perspective.gateway.api.PerspectiveContext;
-import com.hunterparcells.huntercomponents.common.HunterComponents;
+import com.hunterparcells.precisioninputcomponents.common.PrecisionInputComponents;
 
 public class GatewayHook extends AbstractGatewayModuleHook {
-    private static final LoggerEx log = LoggerEx.newBuilder().build("rad.gateway.GatewayHook");
+    private static final LoggerEx log = LoggerEx.newBuilder().build("precisioninputcomponents.gateway.GatewayHook");
 
     private GatewayContext gatewayContext;
     private PerspectiveContext perspectiveContext;
@@ -23,7 +23,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
     @Override
     public void setup(GatewayContext context) {
         this.gatewayContext = context;
-        log.info("Setting up HunterComponents module.");
+        log.info("Setting up PrecisionInputComponents module.");
     }
 
     @Override
@@ -35,20 +35,20 @@ public class GatewayHook extends AbstractGatewayModuleHook {
 
 
         if(this.componentRegistry != null) {
-            log.info("Registering Hunter's Components.");
+            log.info("Registering Precision Input Components.");
             this.componentRegistry.registerComponent(new DebouncedTextField().getDescriptor());
         }else {
-            log.error("Reference to component registry not found, Hunter's Components will fail to function!");
+            log.error("Reference to component registry not found, Precision Input Components will fail to function!");
         }
     }
 
     @Override
     public void shutdown() {
-        log.info("Shutting down RadComponent module and removing registered components.");
+        log.info("Shutting down Precision Input Components module and removing registered components.");
         if(this.componentRegistry != null) {
             this.componentRegistry.removeComponent(new DebouncedTextField().getNamespacedId());
         }else {
-            log.warn("Component registry was null, could not unregister Hunter's Components.");
+            log.warn("Component registry was null, could not unregister Precision Input Components.");
         }
     }
 
@@ -68,7 +68,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
 
     @Override
     public Optional<String> getMountPathAlias() {
-        return Optional.of(HunterComponents.URL_ALIAS);
+        return Optional.of(PrecisionInputComponents.URL_ALIAS);
     }
 
     @Override

@@ -9,7 +9,7 @@ import {
 
 import './DebouncedTextField.scss';
 
-export const COMPONENT_TYPE = 'hc.input.debouncedtextfield';
+export const COMPONENT_TYPE = 'pic.debouncedtextfield';
 
 export interface DebouncedTextFieldProps {
   text: string;

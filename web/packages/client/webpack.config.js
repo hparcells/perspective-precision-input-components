@@ -12,7 +12,7 @@ const webpack = require('webpack'),
     MiniCssExtractPlugin = require("mini-css-extract-plugin"),
     AfterBuildPlugin = require('@fiverr/afterbuild-webpack-plugin');
 
-const LibName = "HunterComponents";
+const LibName = "PrecisionInputComponents";
 
 // function that copies the result of the webpack from the dist/ folder into the  generated-resources folder which
 // ultimately gets included in a 'web.jar'.  This jar is included in the module's gateway scope, and its contents are
@@ -57,7 +57,7 @@ const config = {
 
     // define our entry point, from which we build our source tree for bundling
     entry: {
-        HunterComponents:  path.join(__dirname, "./src/client-components.ts")
+        PrecisionInputComponents:  path.join(__dirname, "./src/client-components.ts")
     },
 
     output: {

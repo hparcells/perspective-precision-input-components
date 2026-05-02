@@ -10,18 +10,18 @@ plugins {
 
 allprojects {
     version = "1.0.0"
-    group = "com.hunterparcells.huntercomponents"
+    group = "com.hunterparcells.precisioninputcomponents"
 }
 
 ignitionModule {
     // name of the .modl file to build
-    fileName.set("HunterComponents")
+    fileName.set("PrecisionInputComponents")
 
     // module xml configuration
-    name.set("Hunter's Components")
-    id.set("com.hunterparcells.huntercomponents")
+    name.set("Precision Input Components")
+    id.set("com.hunterparcells.precisioninputcomponents")
     moduleVersion.set("${project.version}")
-    moduleDescription.set("Hunter's custom Perspective components.")
+    moduleDescription.set("Structured and debounced input components.")
     requiredIgnitionVersion.set("8.3.0")
     license.set("LICENSE")
 
@@ -46,8 +46,8 @@ ignitionModule {
     // Ignition which classes should be loaded in a given scope.
     hooks.putAll(
         mapOf(
-            "com.hunterparcells.huntercomponents.gateway.GatewayHook" to "G",
-            "com.hunterparcells.huntercomponents.designer.DesignerHook" to "D"
+            "com.hunterparcells.precisioninputcomponents.gateway.GatewayHook" to "G",
+            "com.hunterparcells.precisioninputcomponents.designer.DesignerHook" to "D"
         )
     )
     skipModlSigning.set(true)

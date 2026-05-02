@@ -1,4 +1,4 @@
-package com.hunterparcells.huntercomponents.common;
+package com.hunterparcells.precisioninputcomponents.common;
 
 import javax.swing.*;
 

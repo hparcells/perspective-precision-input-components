@@ -1,11 +1,11 @@
-package com.hunterparcells.huntercomponents.common.component;
+package com.hunterparcells.precisioninputcomponents.common.component;
 
-import com.hunterparcells.huntercomponents.common.Component;
+import com.hunterparcells.precisioninputcomponents.common.Component;
 
 public class DebouncedTextField extends Component {
     public DebouncedTextField() {
         super(
-                "hc.input.debouncedtextfield",
+                "pic.debouncedtextfield",
                 "Debounced Text Field",
                 "A text field with a debounced value.",
                 "TxInput"

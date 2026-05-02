@@ -1,6 +1,6 @@
-package com.hunterparcells.huntercomponents.common;
+package com.hunterparcells.precisioninputcomponents.common;
 
-import com.hunterparcells.huntercomponents.common.util.ComponentUtilities;
+import com.hunterparcells.precisioninputcomponents.common.util.ComponentUtilities;
 import com.inductiveautomation.ignition.common.jsonschema.JsonSchema;
 import com.inductiveautomation.perspective.common.api.ComponentDescriptor;
 import com.inductiveautomation.perspective.common.api.ComponentDescriptorImpl;
@@ -83,9 +83,9 @@ public class Component {
                 .setDefaultMetaName(this.defaultName)
                 .setIcon(this.getIcon())
                 .setEvents(this.events)
-                .setModuleId(HunterComponents.MODULE_ID)
-                .setPaletteCategory(HunterComponents.COMPONENT_CATEGORY)
-                .setResources(HunterComponents.BROWSER_RESOURCES);
+                .setModuleId(PrecisionInputComponents.MODULE_ID)
+                .setPaletteCategory(PrecisionInputComponents.COMPONENT_CATEGORY)
+                .setResources(PrecisionInputComponents.BROWSER_RESOURCES);
 
         for(PaletteEntry paletteEntry : this.paletteEntries) {
             builder.addPaletteEntry(

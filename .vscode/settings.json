@@ -1,0 +1,20 @@
+{
+  "files.exclude": {
+    ".gradle/": true,
+    ".idea/": true,
+    "gradle/": true,
+    "gradle.properties": true,
+    "gradlew": true,
+    "gradlew.bat": true,
+    "settings.gradle.kts": true,
+    "**/.gradle": true,
+    "**/build": true,
+    "**/build.gradle.kts": true,
+    "**/yarn.lock": true,
+    "**/IGNITION.md": true,
+    "**/node_modules/": true,
+    "**/dist/": true,
+    "web/packages/designer/": true,
+    "LICENSE": true
+  }
+}

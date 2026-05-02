@@ -1,6 +1,6 @@
-package com.hunterparcells.huntercomponents.designer;
+package com.hunterparcells.precisioninputcomponents.designer;
 
-import com.hunterparcells.huntercomponents.common.component.DebouncedTextField;
+import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextField;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
@@ -12,18 +12,18 @@ import com.inductiveautomation.perspective.designer.api.ComponentDesignDelegateR
 import com.inductiveautomation.perspective.designer.api.PerspectiveDesignerInterface;
 
 public class DesignerHook extends AbstractDesignerModuleHook {
-    private static final LoggerEx logger = LoggerEx.newBuilder().build("HunterComponents");
+    private static final LoggerEx logger = LoggerEx.newBuilder().build("PrecisionInputComponents");
 
     private DesignerContext context;
     private DesignerComponentRegistry registry;
     private ComponentDesignDelegateRegistry delegateRegistry;
 
     static {
-        BundleUtil.get().addBundle("huntercomponents", DesignerHook.class.getClassLoader(), "huntercomponents");
+        BundleUtil.get().addBundle("precisioninputcomponents", DesignerHook.class.getClassLoader(), "precisioninputcomponents");
     }
 
     public DesignerHook() {
-        logger.info("Registering Hunter's Components in Designer!");
+        logger.info("Registering Precision Input Components in Designer!");
     }
 
     private void init() {

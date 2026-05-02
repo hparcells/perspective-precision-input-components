@@ -258,10 +258,6 @@ designer/out/
 .idea/
 build/
 
-# dynamically generated resources
-gateway/src/main/resources/mounted/js/RadComponents.js
-gateway/src/main/resources/mounted/js/RadDesignComponents.js
-
 
 # web subproject ignores
 web/node_modules/

@@ -1,4 +1,4 @@
-package com.hunterparcells.huntercomponents.common.util;
+package com.hunterparcells.precisioninputcomponents.common.util;
 
 import com.inductiveautomation.perspective.common.api.ComponentEventDescriptor;
 

@@ -1,0 +1,39 @@
+{
+    "name": "web-client",
+    "version": "1.0.0",
+    "description": "Client scope Perspective components.",
+    "main": "dist/index.js",
+    "typings": "dist/typings/web-client.d.ts",
+    "license": "UNLICENSED",
+    "scripts": {
+        "build": "yarn run clean && webpack --mode development",
+        "client": "yarn run build",
+        "clean": "rimraf dist .awcache",
+        "deepClean": "yarn run clean && rimraf node_modules __coverage__"
+    },
+    "dependencies": {
+        "axios": "^1.10.0",
+        "date-fns": "^4.1.0",
+        "react": "16.14.0",
+        "react-dom": "16.14.0"
+    },
+    "devDependencies": {
+        "@inductiveautomation/perspective-client": "^2.1.16",
+        "@fiverr/afterbuild-webpack-plugin": "^1.0.0",
+        "@types/history": "^4.6.0",
+        "@types/jsnlog": "2.17.35",
+        "@types/moment-timezone": "^0.5.3",
+        "@types/react": "16.8.8",
+        "@types/react-dom": "16.8.3",
+        "babel-core": "^6.26.3",
+        "css-loader": "^7.1.2",
+        "mini-css-extract-plugin": "^2.6.0",
+        "sass": "^1.49.10",
+        "sass-loader": "12.6.0",
+        "ts-loader": "^9.2.9",
+        "typescript": "^5.8.3",
+        "webpack": "^5.100.2",
+        "webpack-cli": "4.9.2",
+        "yarn": "^1.22.18"
+    }
+}

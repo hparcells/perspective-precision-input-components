@@ -235,6 +235,15 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
+/.hgignore
+relre:/bin
+relre:/classes
+
+
+# Node modules
+**/node_modules/*
+node_modules/
+
 # temporary build output folders
 gateway/out
 gateway/build
@@ -254,4 +263,23 @@ gateway/src/main/resources/mounted/js/RadComponents.js
 gateway/src/main/resources/mounted/js/RadDesignComponents.js
 
 
+# web subproject ignores
+web/node_modules/
+web/.gradle
+web/build
+web/packages/client/.awcache
+web/packages/client/dist
+web/packages/client/node_modules
+web/packages/client/yarn-error.log
+web/packages/designer/.awcache
+web/packages/designer/dist
+web/packages/designer/node_modules
+web/packages/designer/yarn-error.log
+
+
+Ignition-Build/
+
 private/
+sign.props
+gateway/src/main/resources/mounted/RadComponents.css
+gateway/src/main/resources/mounted/RadComponents.js

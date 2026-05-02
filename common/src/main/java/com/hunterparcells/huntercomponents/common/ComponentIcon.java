@@ -1,0 +1,17 @@
+package com.hunterparcells.huntercomponents.common;
+
+import javax.swing.*;
+
+public enum ComponentIcon {
+    DEBOUNCED_TEXT_FIELD("debouncedtextfield");
+
+    private final String file;
+
+    ComponentIcon(String file) {
+        this.file = file;
+    }
+
+    public Icon getIcon() {
+        return new ImageIcon(getClass().getResource("/icon/" + file + ".png"));
+    }
+}

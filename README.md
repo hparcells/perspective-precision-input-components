@@ -1,96 +1,50 @@
-# Minimal Perspective Component Module Example
+# Perspective Component Module Example
+This is an example module which adds some custom components to the Perspective module.  There are 3 different components
+in this example, each exercising different aspects of the Perspective component API, as well as demonstrating
+a few different ways of dealing with data and configuration of the components in the gateway designer.
 
-This is an example module which demonstrates the bare minimum required to add a single component to the perspective
-component palette.  This module project is not 'production ready', and is not intended to be the starting point for
-a production-capable component module.  Instead, this module's structure is merely to demonstrate the minimal APIs
-required to:
+### Summary of Components
 
-1. Define a component and its required assets
-2. Register the component with the Perspective component registries, so that it can be added to a View from the designer's component palette and be usable in the designer and at runtime
+#### 1. Image
 
-To minimize risk of confusion, we use a single static javascript file as our web-scoped component implementation
+Most basic component, provides a reference for the 'bare minimum' required to create a component and register it in the
+appropriate registries such that it's available on the palette in the designer and in the client at runtime.
 
-## Anatomy of a Component
+#### 2. TagCounter
 
-To build components for Perspective, it's helpful to understand what a Component is.  Fundamentally, a  _Component_ in Perspective is a React Component that meets a required property signature (specified by the Perspective component API, explained below), and has been 'registered' with the Perspective module's 'Component Registries'.  To add a component to Perspective requires two programmatic elements, and one fundamental action:
+Demonstrates a component that provides a custom Java/Swing based configuration UI when the component is selected in the
+designer.  In addition, utilizes the gateway's `RouteGroup` api to create a web endpoint from which the component can
+fetch data outside of the Perspective property tree system.
 
-1. Element: An implementation of a React component which exists in a javascript file that is hosted by the gateway.  The component is required to have perspective-runtime-provided properties for layout and event handling.
-2. Element: Meta-information about the component that identifies and describes the component type. Examples of such metainfo includes:
-   * Unique component ID
-   * Human-friendly component name
-   * The default size of the component when added to a View
-   * Default properties and/or property schema
-3. Action: The registration of the component and metadata with the appropriate _Component Registries_
+#### 3. Messenger Component
 
+Somewhat silly example demonstrates the use of a Mobx based state class (component model/store) to contain state outside
+of the PropertyTree system, as well as demonstrates the use of the Store/Model Message Delegate API, which is a way to
+send data between the gateway and browser via perspective's 'real time' websocket communication channel.
 
-We'll briefly describe each of these items.
-
-## The React Component
-
-> Demonstrative example implementation in `gateway/src/main/resources/mounted/js/onecomponent.js`
-
-To function in Perspective's unique layout and event handling systems, the React component requires a few properties
-(*'React Props'*) provided.  This is generally accomplished by extending the `Component` class from `PerspectiveClient` object in the
-browser window.  When using a front end build tool, you would import this from the
-`@inductiveautomation/perspective-client` package.  **Note: The Component from PerspectiveClient is NOT the same as
-a React.Component**
-
-A `PerspectiveClient.Component` features a unique property signature to provide the functions and properties that allow the Perspective Client runtime to place the component in the appropriate location inside it's parent Layout.  For convenience, the necessary layout and event handling properties are provided by the `emit()` function that is passed into each PerspectiveClient.Component as a react property.  So applying the appropriate handling is generally as simple as making sure the the 'top-level' dom element that is rendered by your React component implementation includes the properties that result from the output of calling this function.
-
-In this minimal and tool-less example, this is accomplished in the render function of our simple Image component:
-
-```javascript
-// create the element, and make sure the properties include the results of this.props.emit()
-class Image extends PerspectiveClient.Component {
-    render() {
-        const { props: { url }, emit } = this.props;
-
-        return (React.createElement("img", Object.assign({}, emit(), { src: url, alt: `image-src-${url}` })));
-    }
-}
-```
-
-In a 'production' project, you will likely use JSX syntax to accomplish the same result.  That might look something like this, written in our suggested production language Typescript:
-
-```tsx
-import {Component, ComponentProps} from '@inductiveautomation/perspective-client';
-
-export class Image extends Component<ComponentProps<{ url: string }>, any> {
-    render() {
-        const { props: { url }, emit } = this.props;
-
-        return (<img {...emit()} src={url} alt={`image-src-${url}`} />);
-    }
-}
-```
-
-## The Meta-Information
-
-> Note: This section discusses the two minimal required meta-info types, but there are more than two types of _possible_ meta-information, generally used by more complex component types, or for special designer-handling.  To see examples of additional APIs, look at the _perspective-component_ example in the repo, which demonstrates additional APIs to provide things like special configuration UI in the designer, or special data-handling endpoints in the gateway.
-
-Item number two for developing a Perspective Component is the creation of meta-information that the system relies on to identify the component type across the system, as well as provide default values for things like component properties and layout sizing.
-
-There are two required types of meta-information, and three different areas we need to tell the system about one of these meta-information types.
-
-#### Type 1 - Browser-Side `ComponentMeta`
-
-The ComponentMeta object is something you create in the browser context once per component type, and then register with the `PerspectiveClient.ComponentRegistry`.  A minimal implementation and example of registration exists in the [onecomponent.js file](gateway/src/main/resources/mounted/js/onecomponent.js).
-
-#### Type 2 - Designer/Gateway (Java)-Side `ComponentDescriptor`
-
-Each component type needs to be known not just to the browser, but also for each of the Gateway and Designer scopes.  To do that, we build an instance of a `ComponentDescriptor` for each component type, and register it with the appropriately-scoped `ComponentRegistry`.
-
-The `ComponentDescriptor` shares a small amount of information with the Browser-side ComponentMeta, most importantly the unique ID of the component, which should be *exactly* the same in each meta-info object.  In addition, the ComponentDescriptor is where we define component property schemas, placeholder icons (for the designer), and similar information used not by the web-based runtime, but instead by the gateway (server) or designer.
-
-## The Registration of the Component and Meta-Info
-
-There are three fundamental registries required to have a component that is available in the designer's component palette and in a project runtime:
-
-1. Gateway scope `ComponentRegistry` - where you [register an instance of a ComponentDescriptor](gateway/src/main/java/io/ia/example/perspective/min/gateway/OneComponentGatewayHook.java).  This descriptor is primarily used to establish the property model that provides the data that is sent to the browser at project runtime.
-2. Designer scope `DesignerComponentRegistry` - where you [register an instance of ComponentDescriptor](designer/src/main/java/io/ia/example/perspective/min/designer/OneComponentDesignerHook.java).  This descriptor is primarily used to add your component to the Designer's component palette for use when designing views.
-3. Browser (perspective-client runtime) ComponentRegistry - where you [register an instance of `ComponentMeta`](gateway/src/main/resources/mounted/js/onecomponent.js).
+These examples are only a few of the countless ways a savvy developer can build a module targeting Perspective.
+Ultimately it's up to implementors to choose the tools they prefer.
 
 
+## Quick Tool Overview
+
+This project uses a number of build tools in order to complete the various parts of its assembly.  It's important to note that these tools are just some example options.  You may use any tool you want (or no tool at all).  These examples use:
+
+* [Gradle](https://gradle.org/) — the primary build tool. Most tasks executed in a typical workflow are gradle tasks.
+* [lerna.js](https://lernajs.io/) — is a javascript build-orchestration tool.  It allows us to have independent 'modules'
+ and 'packages' in the same git/hg repository without having to do a lot of complicated symlinking/publishing to pull in changes from one project to another.  It's mostly useful from the commandline, outside of gradle.
+* [yarn](https://yarnpkg.com/) — is a javascript dependency (package) manager that provides a number of improvements
+over npm, though it shares much of the same commands and api.  Much like Ivy or Maven, yarn is used to resolve and download dependencies hosted on remotely hosted repositories.  Inductive Automation publishes our own dependencies through the
+ same nexus repository system we use for other sdk artifacts.  To correctly resolve the Inductive Automation node packages,
+  an `.npmrc` file needs to be added to the front end projects to tell yarn/npm where to find packages in the `@inductiveautomation` namespace.  You will find examples of these in the `web/` directory.
+* [Typescript](https://www.typescriptlang.org/) — the language used to write the front end parts.  Typescript is not required, but is strongly recommended.  Typescript can be thought of as modern javascript with types added (though this is a simplification). The addition of types to JS results in a far better developer experience through much better tooling
+  support.  This can improve maintainability, refactoring, code navigation, bug discovery, etc.  Typescript has its own compiler which emits javascript.  This compiler is frequently paired with other build tools in a way that it emits the javascript, but
+  other tools handle the actual bundling of assets, css, and other supporting dependencies.  Think of typescript as the
+  java compiler without jars or resources.  It just takes typescript files in, and emits the javascript files.
+* [Webpack](https://webpack.js.org/) — the 'bundler' that we use to take the javascript emitted by the typescript compiler and turn it into an actual package that includes necessary assets, dependencies, generates sourcemaps, etc.
+
+
+More documentation incoming, and the web/README.md contains a lot of information about the typescript build process.
 
 ## Getting Started
 
@@ -103,7 +57,7 @@ it will handle downloading the appropriate versions of all tools, and then use t
 
 > Note: the module related task are defined by the module plugin.  Check the documentation at the [Ignition Module Tool](https://github.com/inductiveautomation/ignition-module-tools) repository for more information about the tasks and configuration options.
 
-To run the build, clone this repo and open a command line in the `perspective-component-minimal` directory, and run the `build` gradle task:
+To run the build, clone this repo and open a command line in the `perspective-component` directory, and run the `build` gradle task:
 
 ```
 // on Windows
@@ -113,13 +67,54 @@ gradlew build
 ./gradlew build
 ```
 
+If you would like to be able to execute parts of the build without depending on gradle, you'll need familiarity with
+the javascript and typescript ecosystem, including Node.js, NPM/Yarn, Typescript, Webpack, Babel, etc.
+
+While not a comprehensive instruction set, the process of setting up these tools would look something like the following:
+
+1. Install node and npm, which can be used to further install yarn, typescript, webpack, etc.  macOS and Linux can
+install via package managers, or they and Windows can be installed via the downloads at the
+[Node.js Website](https://nodejs.org/).   We recommend sticking with the LTS versions (actual versions used by the build)
+can be seen in the `./web/build.gradle` file, within the `node` configuration block.
+
+2. With npm installed, install the global dev-dependency tools.  While it's possible to make gradle handle all these,
+it's useful to have them installed locally to speed build times and run local checks and commands without gradle.  In
+general, you want these to be the same (or very close) version as those defined in your package.json files.
+    1. `npm install -g typescript`
+    2. `npm install -g webpack@3.10.1`   // or whatever version you want
+    3. `npm install -g tslint`
+    4. `npm install -g lerna`
+    5. `npm install -g yarn`
+
+3. Gradle - gradle does not need to be installed if commands are executed through the gradle wrapper (see
+[Gradle Wrapper Docs](https://docs.gradle.org/current/userguide/gradle_wrapper.html) for details).
+
+
+Quick Note:  This example is built using a custom gradle plugin developed by IA in order to build Ignition modules.
+This plugin was originally intended for  internal use and, as a result, it makes some assumptions about project
+structure and dependencies.  If you are familiar with Maven and wish to use it to build perspective modules, you may
+do so, though we do not plan integrating nor supporting Perspective module development with the `ignition-maven-plugin`.
+
 ### Project structure & Layout
 
-This section provides a high-level overview of the different parts of this project.
+This section provides a high-level overview of the different parts of this project.  For additional details about
+the `web` subproject, see the readme there.
 
-This example module has a traditional Ignition Module project layout targeting the gateway and designer scopes, with a `common` subproject in which we can place logic that is shared by both scopes.  Currently this project is only depended on by the `gateway` project.which is shared between gateway and designer scopes.
+This example module has a fairly traditional Ignition Module project layout with one key difference.  Like most cross-scope projects, this one has a `common` subproject which is  shared between gateway and designer scopes.  What it does NOT
+have is a `client` scope.  Instead, we have a `web` subproject which contains the source code, assets, and build
+configuration used to build the html/js/css used in the module.
 
-The primary use of the `common` scope is to define `ComponentDescriptor`s for registration in the gateway and designer's respective ComponentRegistry.
+Within the `web` directory is a _lerna workspace_, which is simply a javascript corollary to a 'maven multi-module
+ project',  or a 'multi-project gradle build'.  Meaning, there are more than one 'build' configured.  We have stuck
+ with the lerna default of using `packages` directory that has our two builds - one targeting a perspective client
+ at runtime in a browser, and a second targeting perspective in the designer.  As in Vision, the perspective designer
+ scoped assets frequently extend the perspective client scoped assets (again, remembering that this is client in the
+  context of the web, meaning executing in a web browser.  Nothing to do with _vision clients_).  Ultimately the output
+  of both web/ packages ends up in our `gateway` scoped java project as resources, as the gateway is where they get
+  served from.  That they are named `client` or `designer` is unimportant.  They could be `browser` and `designer` or
+  whatever you choose.  The important part is making sure the files are appropriately registered in the appropriate
+  registries.
+
 
 
 ```
@@ -127,24 +122,41 @@ The primary use of the `common` scope is to define `ComponentDescriptor`s for re
 
   ├── build.gradle.kts                     // root build configuration, like a root pom.xml file
   ├── common
-  │   ├── build.gradle                     // configuration for common scoped build
+  │   ├── build.gradle.kts                     // configuration for common scoped build
   │   └── src
   │       └── main/java                    // where source files live
   ├── designer
-  │   ├── build.gradle
+  │   ├── build.gradle.kts
   │   └── src
   │       └── main/java
   ├── gateway
-  │   ├── build.gradle
+  │   ├── build.gradle.kts
   │   └── src
   │       └── main/java
-  ├── gradle                              // gradle wrapper assets to allow wrapper functionality, should be commited
+  ├── gradle                              // gradle wrapper assets to allow wrapper functionality,should be commited
   │   └── wrapper
   │       ├── gradle-wrapper.jar
   │       └── gradle-wrapper.properties
   ├── gradlew                             // gradle build script for linux/osx
   ├── gradlew.bat                         // gradle build script for windows
   ├── settings.gradle.kts                 // Gradle project structure/global configuration.
+  └── web                                 // parent directory for the web assets we build
+      ├── README.md
+      ├── build.gradle.kts
+      ├── lerna.json                      // lerna configuration file
+      │
+      ├── package.json
+      ├── packages
+      │   ├── client
+      │   │    ├── package.json
+      │   │    ├── webpack.config.json     // webpack build configuration
+      │   │    └── typescript/             // typescript source files
+      │   │
+      │   └── designer
+      │        ├── package.json
+      │        ├── webpack.config.json     // webpack build configuration
+      │        └── typescript/             // typescript source files
+      └── yarn.lock                        // lock file describes the dependencies/versions of front-end resources
 
 ```
 
@@ -152,14 +164,12 @@ The primary use of the `common` scope is to define `ComponentDescriptor`s for re
 
 Building this module through the gradle wrapper is easy!
 
- In a bash (or any similar posix) terminal execute `./gradlew buildModule` (linux/osx).  If on windows, run
-`gradle.bat buildModule`.  This will result in the appropriate gradle binaries being downloaded (match the version
+ In a bash (or any similar posix) terminal execute `./gradlew build` (linux/osx).  If on windows, run
+`gradle.bat build`.  This will result in the appropriate gradle binaries being downloaded (match the version
  and info provided by our `wrapper` task and committed `gradle/` directory).  This will compile and assemble all jars,
- as well as execute the webpack.
-
- All three steps above are typically executed as part of the command `./gradlew buildSignedModule`, which is the
- main task that creates a .modl file and signs it.  To sign your module, you'll need appropriate signing certificates,
- and a configured `sign.props` file that points to those certificates'.
+run all tests/checks, and ultimately create the signed modl file. Note that to sign your module, you'll need appropriate
+ signing certificates, and a `gradle.properties` file that points to those certificates, following the configuration
+ described on plugin readme in the [Tools Repository](https://www.github.com/inductiveautomation/ignition-module-tools).
 
 
  ### Configuring/Customizing

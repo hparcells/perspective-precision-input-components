@@ -1,40 +1,34 @@
 import java.util.concurrent.TimeUnit
-import io.ia.sdk.gradle.modl.task.Deploy
+
 
 plugins {
     base
     // the ignition module plugin: https://github.com/inductiveautomation/ignition-module-tools
     id("io.ia.sdk.modl") version("0.1.1")
+    id("org.barfuin.gradle.taskinfo") version "1.3.0"
 }
 
 allprojects {
-    version = "0.0.1-SNAPSHOT"
-    group = "io.ia.example.perspective.min"
+    version = "1.0.0"
+    group = "com.hunterparcells.huntercomponents"
 }
 
 ignitionModule {
     // name of the .modl file to build
-    fileName.set("OneComponent")
+    fileName.set("HunterComponents")
 
     // module xml configuration
-    name.set("OneComponent")
-    id.set("io.ia.example.perspective.min")
+    name.set("Hunter's Components")
+    id.set("com.hunterparcells.huntercomponents")
     moduleVersion.set("${project.version}")
-    moduleDescription.set("A module that adds components to the Perspective module.")
+    moduleDescription.set("Hunter's custom Perspective components.")
     requiredIgnitionVersion.set("8.3.0")
-    requiredFrameworkVersion.set("8")
-    // says 'this module is free, does not require licensing'.  Defaults to false, delete for commercial modules.
-    freeModule.set(true)
-    license.set("license.html")
+    license.set("LICENSE")
 
     // If we depend on other module being loaded/available, then we specify IDs of the module we depend on,
-    // and specify the Ignition Scope(s) that apply. "G" for gateway, "D" for designer, "C" for VISION client
+    // and specify the Ignition Scope that applies. "G" for gateway, "D" for designer, "C" for VISION client
     // (this module does not run in the scope of a Vision client, so we don't need a "C" entry here)
-    moduleDependencies.putAll(
-        mapOf(
-            "com.inductiveautomation.perspective" to "GD"
-        )
-    )
+    moduleDependencies.put("com.inductiveautomation.perspective", "DG")
 
     // map of 'Gradle Project Path' to Ignition Scope in which the project is relevant.  This is is combined with
     // the dependency declarations within the subproject's build.gradle.kts in order to determine which
@@ -42,8 +36,9 @@ ignitionModule {
     projectScopes.putAll(
         mapOf(
             ":gateway" to "G",
-            ":common" to "DG",
-            ":designer" to "D"
+            ":web" to "G",
+            ":designer" to "D",
+            ":common" to "GD"
         )
     )
 
@@ -51,8 +46,8 @@ ignitionModule {
     // Ignition which classes should be loaded in a given scope.
     hooks.putAll(
         mapOf(
-            "io.ia.example.perspective.min.gateway.OneComponentGatewayHook" to "G",
-            "io.ia.example.perspective.min.designer.OneComponentDesignerHook" to "D"
+            "com.hunterparcells.huntercomponents.gateway.GatewayHook" to "G",
+            "com.hunterparcells.huntercomponents.designer.DesignerHook" to "D"
         )
     )
     skipModlSigning.set(true)

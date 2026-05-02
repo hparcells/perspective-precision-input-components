@@ -3,7 +3,8 @@ package com.hunterparcells.precisioninputcomponents.common;
 import javax.swing.*;
 
 public enum ComponentIcon {
-    DEBOUNCED_TEXT_FIELD("debouncedtextfield");
+    DEBOUNCED_TEXT_FIELD("debouncedtextfield"),
+    DEBOUNCED_TEXT_AREA("debouncedtextarea");
 
     private final String file;
 

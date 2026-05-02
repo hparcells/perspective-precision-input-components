@@ -3,6 +3,7 @@ package com.hunterparcells.precisioninputcomponents.gateway;
 import java.util.Optional;
 
 import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextField;
+import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextArea;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -37,6 +38,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         if(this.componentRegistry != null) {
             log.info("Registering Precision Input Components.");
             this.componentRegistry.registerComponent(new DebouncedTextField().getDescriptor());
+            this.componentRegistry.registerComponent(new DebouncedTextArea().getDescriptor());
         }else {
             log.error("Reference to component registry not found, Precision Input Components will fail to function!");
         }
@@ -47,6 +49,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         log.info("Shutting down Precision Input Components module and removing registered components.");
         if(this.componentRegistry != null) {
             this.componentRegistry.removeComponent(new DebouncedTextField().getNamespacedId());
+            this.componentRegistry.removeComponent(new DebouncedTextArea().getNamespacedId());
         }else {
             log.warn("Component registry was null, could not unregister Precision Input Components.");
         }

@@ -2,8 +2,8 @@ package com.hunterparcells.precisioninputcomponents.gateway;
 
 import java.util.Optional;
 
-import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextField;
-import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextArea;
+import com.hunterparcells.precisioninputcomponents.common.Component;
+import com.hunterparcells.precisioninputcomponents.common.Components;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -34,12 +34,15 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         this.perspectiveContext = PerspectiveContext.get(this.gatewayContext);
         this.componentRegistry = this.perspectiveContext.getComponentRegistry();
 
-
-        if(this.componentRegistry != null) {
+        if (this.componentRegistry != null) {
             log.info("Registering Precision Input Components.");
-            this.componentRegistry.registerComponent(new DebouncedTextField().getDescriptor());
-            this.componentRegistry.registerComponent(new DebouncedTextArea().getDescriptor());
-        }else {
+            for (Component component : Components.ALL) {
+                this.componentRegistry.registerComponent(component.getDescriptor());
+            }
+
+            // Gateway-specific code below.
+
+        } else {
             log.error("Reference to component registry not found, Precision Input Components will fail to function!");
         }
     }
@@ -47,10 +50,11 @@ public class GatewayHook extends AbstractGatewayModuleHook {
     @Override
     public void shutdown() {
         log.info("Shutting down Precision Input Components module and removing registered components.");
-        if(this.componentRegistry != null) {
-            this.componentRegistry.removeComponent(new DebouncedTextField().getNamespacedId());
-            this.componentRegistry.removeComponent(new DebouncedTextArea().getNamespacedId());
-        }else {
+        if (this.componentRegistry != null) {
+            for (Component component : Components.ALL) {
+                this.componentRegistry.removeComponent(component.getNamespacedId());
+            }
+        } else {
             log.warn("Component registry was null, could not unregister Precision Input Components.");
         }
     }

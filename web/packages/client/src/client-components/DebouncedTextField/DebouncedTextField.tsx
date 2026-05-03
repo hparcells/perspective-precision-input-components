@@ -1,11 +1,7 @@
 import * as React from 'react';
-import {
-  ComponentMeta,
-  ComponentProps,
-  PComponent,
-  PropertyTree,
-  SizeObject
-} from '@inductiveautomation/perspective-client';
+import { ComponentProps } from '@inductiveautomation/perspective-client';
+
+import { createComponentMeta } from '../../util/component';
 
 import './DebouncedTextField.scss';
 
@@ -57,41 +53,32 @@ export function DebouncedTextField(props: ComponentProps<DebouncedTextFieldProps
   );
 }
 
-export class DebouncedTextFieldMeta implements ComponentMeta {
-  getComponentType(): string {
-    return COMPONENT_TYPE;
-  }
-
-  getViewComponent(): PComponent {
-    return DebouncedTextField;
-  }
-
-  getDefaultSize(): SizeObject {
-    return {
-      width: 150,
-      height: 36
-    };
-  }
-
-  getPropsReducer(tree: PropertyTree): DebouncedTextFieldProps {
+export const DebouncedTextFieldMeta = createComponentMeta({
+  type: COMPONENT_TYPE,
+  component: DebouncedTextField,
+  defaultSize: {
+    width: 150,
+    height: 36
+  },
+  propsReducer: (tree): DebouncedTextFieldProps => {
     return {
       text: tree.readString('text', ''),
       debouncedText: tree.readString('debouncedText', ''),
       placeholder: tree.readString('placeholder', ''),
       delay: tree.readNumber('delay', 300),
       disabled: tree.readBoolean('disabled', false),
-      setText: (value: string) => {
+      setText: (value) => {
         tree.write('text', value);
       },
-      setDebouncedText: (value: string) => {
+      setDebouncedText: (value) => {
         tree.write('debouncedText', value);
       },
-      setPreviousValue: (value: string) => {
+      setPreviousValue: (value) => {
         tree.write('previousValue', value);
       },
-      setTimestamp: (value: Date) => {
+      setTimestamp: (value) => {
         tree.write('timestamp', value);
       }
     };
   }
-}
+});

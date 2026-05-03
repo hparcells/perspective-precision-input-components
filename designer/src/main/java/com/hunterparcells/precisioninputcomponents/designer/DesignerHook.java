@@ -1,7 +1,7 @@
 package com.hunterparcells.precisioninputcomponents.designer;
 
-import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextField;
-import com.hunterparcells.precisioninputcomponents.common.component.DebouncedTextArea;
+import com.hunterparcells.precisioninputcomponents.common.Component;
+import com.hunterparcells.precisioninputcomponents.common.Components;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
@@ -35,13 +35,17 @@ public class DesignerHook extends AbstractDesignerModuleHook {
         registry = pdi.getDesignerComponentRegistry();
         delegateRegistry = pdi.getComponentDesignDelegateRegistry();
 
-        registry.registerComponent(new DebouncedTextField().getDescriptor());
-        registry.registerComponent(new DebouncedTextArea().getDescriptor());
+        for (Component component : Components.ALL) {
+            registry.registerComponent(component.getDescriptor());
+        }
+
+        // Designer-specific code below.
     }
 
     private void removeComponents() {
-        registry.removeComponent(new DebouncedTextField().getNamespacedId());
-        registry.removeComponent(new DebouncedTextArea().getNamespacedId());
+        for (Component component : Components.ALL) {
+            registry.removeComponent(component.getNamespacedId());
+        }
     }
 
     @Override

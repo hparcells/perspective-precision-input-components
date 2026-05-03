@@ -11,7 +11,7 @@ const config: Config = {
     v4: true
   },
 
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://picdocs.hunterparcells.com',
   baseUrl: '/',
 
   organizationName: 'hparcells',

@@ -17,6 +17,11 @@
             "description": "Debounced version of the text.",
             "default": ""
         },
+        "previousValue": {
+            "type": "string",
+            "description": "The previous debounced value, before the most recent debounce update.",
+            "default": ""
+        },
         "placeholder": {
             "type": "string",
             "description": "Placeholder text.",

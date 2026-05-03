@@ -13,17 +13,19 @@ export const COMPONENT_TYPE = 'pic.debouncedtextarea';
 
 export interface DebouncedTextAreaProps {
   text: string;
+  debouncedText: string;
   placeholder: string;
   delay: number;
   disabled: boolean;
   rows: number;
   setText: (value: string) => void;
   setDebouncedText: (value: string) => void;
+  setPreviousValue: (value: string) => void;
 }
 
 export function DebouncedTextArea(props: ComponentProps<DebouncedTextAreaProps>) {
   const {
-    props: { text, placeholder, delay, disabled, rows, setText, setDebouncedText },
+    props: { text, debouncedText, placeholder, delay, disabled, rows, setText, setDebouncedText, setPreviousValue },
     emit
   } = props;
 
@@ -34,6 +36,7 @@ export function DebouncedTextArea(props: ComponentProps<DebouncedTextAreaProps>)
 
   React.useEffect(() => {
     const handler = setTimeout(() => {
+      setPreviousValue(debouncedText);
       setDebouncedText(text);
     }, delay);
 
@@ -73,6 +76,7 @@ export class DebouncedTextAreaMeta implements ComponentMeta {
   getPropsReducer(tree: PropertyTree): DebouncedTextAreaProps {
     return {
       text: tree.readString('text', ''),
+      debouncedText: tree.readString('debouncedText', ''),
       placeholder: tree.readString('placeholder', ''),
       delay: tree.readNumber('delay', 300),
       disabled: tree.readBoolean('disabled', false),
@@ -82,6 +86,9 @@ export class DebouncedTextAreaMeta implements ComponentMeta {
       },
       setDebouncedText: (value: string) => {
         tree.write('debouncedText', value);
+      },
+      setPreviousValue: (value: string) => {
+        tree.write('previousValue', value);
       }
     };
   }

@@ -17,15 +17,15 @@ export interface DebouncedTextAreaProps {
   placeholder: string;
   delay: number;
   disabled: boolean;
-  rows: number;
   setText: (value: string) => void;
   setDebouncedText: (value: string) => void;
   setPreviousValue: (value: string) => void;
+  setTimestamp: (value: Date) => void;
 }
 
 export function DebouncedTextArea(props: ComponentProps<DebouncedTextAreaProps>) {
   const {
-    props: { text, debouncedText, placeholder, delay, disabled, rows, setText, setDebouncedText, setPreviousValue },
+    props: { text, debouncedText, placeholder, delay, disabled, setText, setDebouncedText, setPreviousValue, setTimestamp },
     emit
   } = props;
 
@@ -38,6 +38,7 @@ export function DebouncedTextArea(props: ComponentProps<DebouncedTextAreaProps>)
     const handler = setTimeout(() => {
       setPreviousValue(debouncedText);
       setDebouncedText(text);
+      setTimestamp(new Date());
     }, delay);
 
     return () => {
@@ -52,7 +53,6 @@ export function DebouncedTextArea(props: ComponentProps<DebouncedTextAreaProps>)
       placeholder={placeholder}
       onChange={handleChange}
       disabled={disabled}
-      rows={rows}
     />
   );
 }
@@ -80,7 +80,6 @@ export class DebouncedTextAreaMeta implements ComponentMeta {
       placeholder: tree.readString('placeholder', ''),
       delay: tree.readNumber('delay', 300),
       disabled: tree.readBoolean('disabled', false),
-      rows: tree.readNumber('rows', 4),
       setText: (value: string) => {
         tree.write('text', value);
       },
@@ -89,6 +88,9 @@ export class DebouncedTextAreaMeta implements ComponentMeta {
       },
       setPreviousValue: (value: string) => {
         tree.write('previousValue', value);
+      },
+      setTimestamp: (value: Date) => {
+        tree.write('timestamp', value);
       }
     };
   }

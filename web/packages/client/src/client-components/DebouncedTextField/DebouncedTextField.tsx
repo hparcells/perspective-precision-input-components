@@ -20,11 +20,12 @@ export interface DebouncedTextFieldProps {
   setText: (value: string) => void;
   setDebouncedText: (value: string) => void;
   setPreviousValue: (value: string) => void;
+  setTimestamp: (value: Date) => void;
 }
 
 export function DebouncedTextField(props: ComponentProps<DebouncedTextFieldProps>) {
   const {
-    props: { text, debouncedText, placeholder, delay, disabled, setText, setDebouncedText, setPreviousValue },
+    props: { text, debouncedText, placeholder, delay, disabled, setText, setDebouncedText, setPreviousValue, setTimestamp },
     emit
   } = props;
 
@@ -37,6 +38,7 @@ export function DebouncedTextField(props: ComponentProps<DebouncedTextFieldProps
     const handler = setTimeout(() => {
       setPreviousValue(debouncedText);
       setDebouncedText(text);
+      setTimestamp(new Date());
     }, delay);
 
     return () => {
@@ -86,6 +88,9 @@ export class DebouncedTextFieldMeta implements ComponentMeta {
       },
       setPreviousValue: (value: string) => {
         tree.write('previousValue', value);
+      },
+      setTimestamp: (value: Date) => {
+        tree.write('timestamp', value);
       }
     };
   }

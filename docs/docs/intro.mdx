@@ -1,0 +1,20 @@
+---
+sidebar_position: 1
+---
+
+# Perspective Precision Input Components
+
+Perspective Precision Input Components is an Ignition module that provides a set of input components for Ignition's Perspective module. These components are designed to solve common UX problems in industrial HMI applications, particularly the issue of writing to a data source on every keystroke.
+
+## Why Debounced Inputs?
+
+Standard Perspective input components write their value to the backing data source (a tag, binding, or script) on every character typed. In an industrial context this creates noise: intermediate partial values trigger unnecessary tag writes, script executions, or database queries.
+
+The debounced components in this module separate the **live editing value** from the **committed value**. The committed value only updates after the user stops typing for a configurable delay, giving you a clean signal to act on.
+
+## Components
+
+| Component | Type ID | Description |
+|-----------|---------|-------------|
+| [Debounced Text Field](./components/debounced-text-field) | `pic.debouncedtextfield` | A single-line text input with debounce behavior. |
+| [Debounced Text Area](./components/debounced-text-area) | `pic.debouncedtextarea` | A multi-line text area with debounce behavior. |

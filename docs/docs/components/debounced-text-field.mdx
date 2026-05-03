@@ -1,0 +1,50 @@
+---
+sidebar_position: 1
+---
+
+# Debounced Text Field
+
+**Component Type ID:** `pic.debouncedtextfield`
+
+## Description
+
+The Debounced Text Field is a single-line text input that separates the live, in-progress editing value from a debounced, committed value. Rather than propagating every keystroke to `props.debouncedText`, the component waits until the user pauses typing for the duration specified by `props.delay` before committing the value. This prevents unnecessary tag writes, script executions, or database queries triggered by intermediate, incomplete input.
+
+See also: [Debounced Text Area](./debounced-text-area) for multi-line input.
+
+## User Interaction
+
+As the user types, `props.text` is updated immediately on every keystroke, reflecting the current contents of the field. The debounce timer is reset with each new character. Once the user pauses for `props.delay` milliseconds without typing, the component commits the value in sequence:
+
+1. `props.previousValue` is set to the current value of `props.debouncedText`.
+2. `props.debouncedText` is updated to match `props.text`.
+3. `props.timestamp` is set to the current date and time.
+
+If the user resumes typing before the delay elapses, the timer resets and no commit occurs.
+
+## Properties
+
+| Name | Description | Property Type | Default |
+|------|-------------|---------------|---------|
+| `props.text` | The live, uncommitted value of the input field. Updated on every keystroke. Suitable for displaying the current contents of the field, but not for triggering downstream logic. | String | `""` |
+| `props.debouncedText` | The committed value of the input field. Updated only after the user pauses typing for `props.delay` milliseconds. Bind to this property to react to user input without processing every intermediate keystroke. | String | `""` |
+| `props.previousValue` | The value that `props.debouncedText` held before the most recent commit. Written automatically by the component each time a debounce commit occurs. Useful for detecting what changed or implementing undo-style logic. | String | `""` |
+| `props.timestamp` | The date and time of the most recent debounce commit. Written automatically by the component. Useful for detecting whether a commit has occurred or for timestamping data writes. | DateTime | `null` |
+| `props.placeholder` | Placeholder text displayed inside the input when `props.text` is empty. | String | `""` |
+| `props.delay` | The number of milliseconds the component waits after the last keystroke before committing the value. Increase this value to reduce the frequency of commits on fast typists; decrease it for a more responsive feel. | Number | `300` |
+| `props.disabled` | When `true`, the input is non-interactive and visually indicates a disabled state. The user cannot focus or type into the field. | Boolean | `false` |
+
+:::note
+`props.previousValue` and `props.timestamp` are written by the component and do not need to be configured. They will be overwritten on each commit.
+:::
+
+## Component Events
+
+This component does not fire custom events. It communicates exclusively through property writes. To respond to committed input, use a **Property Change** script on `props.debouncedText`, or bind `props.debouncedText` directly to a tag or expression.
+
+## Default Size
+
+| Property | Value |
+|----------|-------|
+| Width | 150 px |
+| Height | 36 px |

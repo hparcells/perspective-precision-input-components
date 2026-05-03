@@ -21,7 +21,17 @@ export interface DebouncedTextFieldProps {
 
 export function DebouncedTextField(props: ComponentProps<DebouncedTextFieldProps>) {
   const {
-    props: { text, debouncedText, placeholder, delay, disabled, setText, setDebouncedText, setPreviousValue, setTimestamp },
+    props: {
+      text,
+      debouncedText,
+      placeholder,
+      delay,
+      disabled,
+      setText,
+      setDebouncedText,
+      setPreviousValue,
+      setTimestamp
+    },
     emit
   } = props;
 

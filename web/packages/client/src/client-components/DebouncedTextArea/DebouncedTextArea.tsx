@@ -21,7 +21,17 @@ export interface DebouncedTextAreaProps {
 
 export function DebouncedTextArea(props: ComponentProps<DebouncedTextAreaProps>) {
   const {
-    props: { text, debouncedText, placeholder, delay, disabled, setText, setDebouncedText, setPreviousValue, setTimestamp },
+    props: {
+      text,
+      debouncedText,
+      placeholder,
+      delay,
+      disabled,
+      setText,
+      setDebouncedText,
+      setPreviousValue,
+      setTimestamp
+    },
     emit
   } = props;
 
